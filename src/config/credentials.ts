@@ -12,6 +12,7 @@ export const TWITTER_ACCESS_TOKEN_KEY =
   process.env['TWITTER_ACCESS_TOKEN_KEY'] ?? ''
 export const TWITTER_ACCESS_TOKEN_SECRET =
   process.env['TWITTER_ACCESS_TOKEN_SECRET'] ?? ''
+export const TWITTER_AUTH_BEARER_TOKEN = process.env['TWITTER_AUTH_BEARER_TOKEN'] ?? ''
 
 /**
  * How to get your Mastodon credentials:
