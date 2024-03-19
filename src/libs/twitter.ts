@@ -1,5 +1,6 @@
 // import chalk from 'chalk'
 // import Twit from 'twit'
+import { checkServerIdentity } from 'tls'
 import {
   TWITTER_CONSUMER_KEY,
   TWITTER_CONSUMER_SECRET,
@@ -8,23 +9,24 @@ import {
 } from '../config'
 import { isEmpty } from './validator'
 import { TweetEntitiesV2, TwitterApi } from 'twitter-api-v2'
+import { Post } from './mastodon'
 
 type FetchTweetResponse = {
   tweetId: string
   tweet: string
 }
 
-function expandUrls(urls: TweetEntitiesV2['urls'], text: string): string {
-  let modifiedMessage = `${text}`
-  for (const item of urls) {
-    modifiedMessage = text.replace(item.url, item.expanded_url)
-  }
-  return modifiedMessage
-}
+const client = new TwitterApi({
+  appKey: TWITTER_CONSUMER_KEY,
+  appSecret: TWITTER_CONSUMER_SECRET,
+  accessToken: TWITTER_ACCESS_TOKEN_KEY,
+  accessSecret: TWITTER_ACCESS_TOKEN_SECRET,
+})
 
-// export async function tweet() {}
+console.log('client', client)
 
-export async function fetchLatestTweet(): Promise<FetchTweetResponse | void> {
+
+function checkTwitterSecrets() {
   if (isEmpty(TWITTER_CONSUMER_KEY)) {
     throw new Error(`The TWITTER_CONSUMER_KEY is missing in your environment`)
   }
@@ -43,16 +45,26 @@ export async function fetchLatestTweet(): Promise<FetchTweetResponse | void> {
       `The TWITTER_ACCESS_TOKEN_SECRET is missing in your environment`,
     )
   }
+}
 
-  const client = new TwitterApi({
-    appKey: TWITTER_CONSUMER_KEY,
-    appSecret: TWITTER_CONSUMER_SECRET,
-    accessToken: TWITTER_ACCESS_TOKEN_KEY,
-    accessSecret: TWITTER_ACCESS_TOKEN_SECRET,
-  }).readOnly
+function expandUrls(urls: TweetEntitiesV2['urls'], text: string): string {
+  let modifiedMessage = `${text}`
+  for (const item of urls) {
+    modifiedMessage = text.replace(item.url, item.expanded_url)
+  }
+  return modifiedMessage
+}
 
-  console.log('client', client)
+export async function tweet(post: Post) {
+  // post to twitter
+  await client.v2.tweet({
+    text: `${post.text ?? ''} \nvia: ${post.url}`,
+  })
+}
 
+export async function fetchLatestTweet(): Promise<FetchTweetResponse | void> {
+
+  checkTwitterSecrets()
   const {
     data: { id: userId, username },
   } = await client.v2.me()

@@ -12,7 +12,8 @@ export function checkMastodonSecrets() {
   }
 }
 
-let mastodonClient: Awaited<ReturnType<typeof login>> | null = null
+type Client = Awaited<ReturnType<typeof login>>
+let mastodonClient: Client | null = null
 export async function getMastodonClient() {
   return (
     mastodonClient ||
@@ -34,14 +35,20 @@ export async function postToMastodon(text: string): Promise<void> {
   console.log(chalk.green('Tweet posted to Mastodon successfully!'))
 }
 
-export async function getLatestMastodon() {
+type Status = Awaited<ReturnType<Client['v1']['accounts']['listStatuses']>>[0]
+
+export type Post = Status
+
+export async function getLatestMastodon(): Promise<Status | undefined> {
   checkMastodonSecrets()
   const masto = await getMastodonClient()
   const { id: accountId } = await masto.v1.accounts.verifyCredentials()
-  
+
   const statuses = await masto.v1.accounts.listStatuses(accountId, {
-    limit: 2,
+    limit: 1,
   })
 
   console.log('mastodon statuses', statuses)
+
+  return statuses[0]
 }

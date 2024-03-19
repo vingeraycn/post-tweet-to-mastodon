@@ -2,30 +2,32 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 
 import chalk from 'chalk'
-import { getLatestPostedTweetId, storePostedTweetId } from './libs/cache'
+import { cachePostId, canPost, getPostedId } from './libs/cache'
 import { postToMastodon } from './libs/mastodon'
-import { fetchLatestTweet } from './libs/twitter'
+import { fetchLatestTweet, tweet } from './libs/twitter'
 import { getLatestMastodon } from './libs/mastodon'
 
 async function main(): Promise<void> {
-  // const latestPostedTweet = getLatestPostedTweetId()
-  await getLatestMastodon()
-  // const latestFetchedTweet = await fetchLatestTweet()
-  // if (!latestFetchedTweet) {
-  //   console.log(chalk.yellow('Skipping tweet once it is a reply or a retweet.'))
-  //   return
-  // }
 
-  // const { tweet, tweetId } = latestFetchedTweet
-  // if (latestPostedTweet && latestPostedTweet === tweetId) {
-  //   console.log(chalk.yellow('Skipping tweet once it was already posted.'))
-  //   return
-  // }
-  // await postToMastodon(tweet)
-  // storePostedTweetId(tweetId)
+  const mastodon = await getLatestMastodon()
+  if (!mastodon) {
+    return
+  }
+  if (!canPost(mastodon.id)) {
+    return
+  }
+
+  try {
+    // post to twitter
+    await tweet(mastodon)
+    // cache post id
+    cachePostId(mastodon.id)
+  } catch (e) {
+    console.log(`tweet failed`, e)
+  }
 }
 
-;(async () => {
+; (async () => {
   try {
     await main()
     process.exit(0)
