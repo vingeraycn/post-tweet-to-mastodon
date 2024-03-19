@@ -57,9 +57,7 @@ function expandUrls(urls: TweetEntitiesV2['urls'], text: string): string {
 
 export async function tweet(post: Post) {
   // post to twitter
-  await client.v2.tweet({
-    text: `${post.text ?? ''} \nvia: ${post.url}`,
-  })
+  await client.v1.tweet(`${post.text ?? ''} \nvia: ${post.url}`)
 }
 
 export async function fetchLatestTweet(): Promise<FetchTweetResponse | void> {
