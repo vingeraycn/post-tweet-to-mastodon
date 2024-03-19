@@ -8,21 +8,21 @@ import { fetchLatestTweet } from './libs/twitter'
 import { getLatestMastodon } from './libs/mastodon'
 
 async function main(): Promise<void> {
-  const latestPostedTweet = getLatestPostedTweetId()
+  // const latestPostedTweet = getLatestPostedTweetId()
   await getLatestMastodon()
-  const latestFetchedTweet = await fetchLatestTweet()
-  if (!latestFetchedTweet) {
-    console.log(chalk.yellow('Skipping tweet once it is a reply or a retweet.'))
-    return
-  }
+  // const latestFetchedTweet = await fetchLatestTweet()
+  // if (!latestFetchedTweet) {
+  //   console.log(chalk.yellow('Skipping tweet once it is a reply or a retweet.'))
+  //   return
+  // }
 
-  const { tweet, tweetId } = latestFetchedTweet
-  if (latestPostedTweet && latestPostedTweet === tweetId) {
-    console.log(chalk.yellow('Skipping tweet once it was already posted.'))
-    return
-  }
-  await postToMastodon(tweet)
-  storePostedTweetId(tweetId)
+  // const { tweet, tweetId } = latestFetchedTweet
+  // if (latestPostedTweet && latestPostedTweet === tweetId) {
+  //   console.log(chalk.yellow('Skipping tweet once it was already posted.'))
+  //   return
+  // }
+  // await postToMastodon(tweet)
+  // storePostedTweetId(tweetId)
 }
 
 ;(async () => {
