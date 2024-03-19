@@ -14,10 +14,13 @@ export function checkMastodonSecrets() {
 
 let mastodonClient: Awaited<ReturnType<typeof login>> | null = null
 export async function getMastodonClient() {
-  return mastodonClient || (mastodonClient = await login({
-    url: MASTODON_URL,
-    accessToken: MASTODON_ACCESS_TOKEN,
-  }))
+  return (
+    mastodonClient ||
+    (mastodonClient = await login({
+      url: MASTODON_URL,
+      accessToken: MASTODON_ACCESS_TOKEN,
+    }))
+  )
 }
 
 export async function postToMastodon(text: string): Promise<void> {
@@ -35,9 +38,8 @@ export async function getLatestMastodon() {
   checkMastodonSecrets()
   const masto = await getMastodonClient()
   const statuses = await masto.v1.timelines.listPublic({
-    limit: 2
+    limit: 2,
   })
 
   console.log('mastodon statuses', statuses)
-  
 }
