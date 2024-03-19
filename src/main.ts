@@ -5,9 +5,11 @@ import chalk from 'chalk'
 import { getLatestPostedTweetId, storePostedTweetId } from './libs/cache'
 import { postToMastodon } from './libs/mastodon'
 import { fetchLatestTweet } from './libs/twitter'
+import { getLatestMastodon } from './libs/mastodon'
 
 async function main(): Promise<void> {
   const latestPostedTweet = getLatestPostedTweetId()
+  await getLatestMastodon()
   const latestFetchedTweet = await fetchLatestTweet()
   if (!latestFetchedTweet) {
     console.log(chalk.yellow('Skipping tweet once it is a reply or a retweet.'))

@@ -22,6 +22,10 @@ function expandUrls(urls: TweetEntitiesV2['urls'], text: string): string {
   return modifiedMessage
 }
 
+export async function tweet() {
+  
+}
+
 export async function fetchLatestTweet(): Promise<FetchTweetResponse | void> {
   if (isEmpty(TWITTER_CONSUMER_KEY)) {
     throw new Error(`The TWITTER_CONSUMER_KEY is missing in your environment`)
