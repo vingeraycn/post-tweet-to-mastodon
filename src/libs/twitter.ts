@@ -47,15 +47,19 @@ export async function fetchLatestTweet(): Promise<FetchTweetResponse | void> {
     appSecret: TWITTER_CONSUMER_SECRET,
     accessToken: TWITTER_ACCESS_TOKEN_KEY,
     accessSecret: TWITTER_ACCESS_TOKEN_SECRET,
-  })
+  }).readOnly
+
+  console.log('client', client)
 
   const {
-    data: { id: userId },
+    data: { id: userId, username },
   } = await client.v2.me()
+  console.log('me', { userId, username })
   const { data } = await client.v2.userTimeline(userId, {
     max_results: 1,
     exclude: ['replies', 'retweets'],
   })
+  console.log('userTimeline', data)
   const rencentTweet = data.data[0]
   const { text, id, in_reply_to_user_id, referenced_tweets, entities } =
     rencentTweet
@@ -64,7 +68,10 @@ export async function fetchLatestTweet(): Promise<FetchTweetResponse | void> {
   const modifiedTweet = expandUrls(entities?.urls ?? [], text)
 
   // 这里您可以根据需要对modifiedTweet进行进一步处理
-  console.log(modifiedTweet) // 仅作为示例输出处理后的推文
+  console.log('modifiedTweet', modifiedTweet) // 仅作为示例输出处理后的推文
 
-  return { tweetId: id, tweet: modifiedTweet }
+  return {
+    tweetId: id,
+    tweet: modifiedTweet + '\n' + `https://x.com/${username}/status/${id}`,
+  }
 }
