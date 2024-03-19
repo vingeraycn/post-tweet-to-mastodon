@@ -37,7 +37,9 @@ export async function postToMastodon(text: string): Promise<void> {
 export async function getLatestMastodon() {
   checkMastodonSecrets()
   const masto = await getMastodonClient()
-  const statuses = await masto.v1.timelines.listPublic({
+  const { id: accountId } = await masto.v1.accounts.verifyCredentials()
+  
+  const statuses = await masto.v1.accounts.listStatuses(accountId, {
     limit: 2,
   })
 
