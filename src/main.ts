@@ -2,13 +2,11 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 
 import chalk from 'chalk'
-import { cachePostId, canPost, getPostedId } from './libs/cache'
-import { postToMastodon } from './libs/mastodon'
-import { fetchLatestTweet, tweet } from './libs/twitter'
+import { cachePostId, canPost } from './libs/cache'
 import { getLatestMastodon } from './libs/mastodon'
+import { tweet } from './libs/twitter'
 
 async function main(): Promise<void> {
-
   const mastodon = await getLatestMastodon()
   if (!mastodon) {
     return
@@ -27,7 +25,7 @@ async function main(): Promise<void> {
   }
 }
 
-; (async () => {
+;(async () => {
   try {
     await main()
     process.exit(0)

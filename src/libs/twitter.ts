@@ -17,19 +17,22 @@ type FetchTweetResponse = {
   tweet: string
 }
 
-const client = new TwitterApi({
-  appKey: TWITTER_CONSUMER_KEY,
-  appSecret: TWITTER_CONSUMER_SECRET,
-  accessToken: TWITTER_ACCESS_TOKEN_KEY,
-  accessSecret: TWITTER_ACCESS_TOKEN_SECRET
-})
+// const client = new TwitterApi({
+//   appKey: TWITTER_CONSUMER_KEY,
+//   appSecret: TWITTER_CONSUMER_SECRET,
+//   accessToken: TWITTER_ACCESS_TOKEN_KEY,
+//   accessSecret: TWITTER_ACCESS_TOKEN_SECRET,
+// })
+
+const client = new TwitterApi(TWITTER_AUTH_BEARER_TOKEN)
 
 console.log('client', client)
 
-
 function checkTwitterSecrets() {
   if (isEmpty(TWITTER_AUTH_BEARER_TOKEN)) {
-    throw new Error(`The TWITTER_AUTH_BEARER_TOKEN is missing in your environment`)
+    throw new Error(
+      `The TWITTER_AUTH_BEARER_TOKEN is missing in your environment`,
+    )
   }
   if (isEmpty(TWITTER_CONSUMER_KEY)) {
     throw new Error(`The TWITTER_CONSUMER_KEY is missing in your environment`)
@@ -68,7 +71,6 @@ export async function tweet(post: Post) {
 }
 
 export async function fetchLatestTweet(): Promise<FetchTweetResponse | void> {
-
   checkTwitterSecrets()
   const {
     data: { id: userId, username },
