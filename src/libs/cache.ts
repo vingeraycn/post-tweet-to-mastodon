@@ -10,10 +10,10 @@ export function getPostedId(): string | null {
   return parsedJson?.id
 }
 
-export function getCachedJSON(){
+export function getCachedJSON() {
   if (!existsSync(CACHE_FILE_NAME)) {
     return {
-      postedIds: []
+      postedIds: [],
     }
   }
   const unformattedJson = readFileSync(CACHE_FILE_NAME)

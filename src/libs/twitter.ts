@@ -17,14 +17,14 @@ type FetchTweetResponse = {
   tweet: string
 }
 
-// const client = new TwitterApi({
-//   appKey: TWITTER_CONSUMER_KEY,
-//   appSecret: TWITTER_CONSUMER_SECRET,
-//   accessToken: TWITTER_ACCESS_TOKEN_KEY,
-//   accessSecret: TWITTER_ACCESS_TOKEN_SECRET,
-// })
+const client = new TwitterApi({
+  appKey: TWITTER_CONSUMER_KEY,
+  appSecret: TWITTER_CONSUMER_SECRET,
+  accessToken: TWITTER_ACCESS_TOKEN_KEY,
+  accessSecret: TWITTER_ACCESS_TOKEN_SECRET,
+})
 
-const client = new TwitterApi(TWITTER_AUTH_BEARER_TOKEN)
+// const client = new TwitterApi(TWITTER_AUTH_BEARER_TOKEN)
 
 console.log('client', client)
 
