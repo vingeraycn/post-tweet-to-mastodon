@@ -69,6 +69,8 @@ function expandUrls(urls: TweetEntitiesV2['urls'], text: string): string {
 }
 
 export async function tweet(post: Post) {
+  // log user info
+  console.log('me:', await client.v2.me())
   // post to twitter
   await client.v2.tweet({
     text: `${post.text ?? ''} \nvia: ${post.url}`,
