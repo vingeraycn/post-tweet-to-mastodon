@@ -7,6 +7,8 @@ import {
   TWITTER_ACCESS_TOKEN_KEY,
   TWITTER_ACCESS_TOKEN_SECRET,
   TWITTER_AUTH_BEARER_TOKEN,
+  TWITTER_CLIENT_ID,
+  TWITTER_CLIENT_SECRET,
 } from '../config'
 import { isEmpty } from './validator'
 import { TweetEntitiesV2, TwitterApi } from 'twitter-api-v2'
@@ -17,11 +19,15 @@ type FetchTweetResponse = {
   tweet: string
 }
 
+// const client = new TwitterApi({
+//   appKey: TWITTER_CONSUMER_KEY,
+//   appSecret: TWITTER_CONSUMER_SECRET,
+//   accessToken: TWITTER_ACCESS_TOKEN_KEY,
+//   accessSecret: TWITTER_ACCESS_TOKEN_SECRET,
+// })
 const client = new TwitterApi({
-  appKey: TWITTER_CONSUMER_KEY,
-  appSecret: TWITTER_CONSUMER_SECRET,
-  accessToken: TWITTER_ACCESS_TOKEN_KEY,
-  accessSecret: TWITTER_ACCESS_TOKEN_SECRET,
+  clientId: TWITTER_CLIENT_ID,
+  clientSecret: TWITTER_CLIENT_SECRET,
 })
 
 // const client = new TwitterApi(TWITTER_AUTH_BEARER_TOKEN)
